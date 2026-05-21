@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - MyShop</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .product-img {
+            height: 420px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .product-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Premium Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+
+            <a class="navbar-brand fw-bold" href="index.html">MyShop</a>
+
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="category.html">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+
+                    <li class="nav-item ms-lg-3">
+                        <a class="nav-link position-relative" href="cart.html">
+                            <i class="bi bi-cart fs-5"></i>
+                            <span
+                                class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle"
+                                id="cartCount">0</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+
+        <div class="row" id="productDetails"></div>
+
+        <hr class="my-5">
+
+        <h4 class="mb-4">Related Products</h4>
+        <div class="row g-4" id="relatedProducts"></div>
+
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Laptop", price: 45000, category: "electronics", image: "https://images.unsplash.com/photo-1651241680016-cc9e407e7dc3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D?laptop", desc: "High performance laptop with latest processor." },
+            { id: 2, name: "Headphones", price: 2000, category: "electronics", image: "https://plus.unsplash.com/premium_photo-1679513691474-73102089c117?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aGVhZHBob25lJTIwcHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D/?headphones", desc: "Noise cancelling wireless headphones." },
+            { id: 3, name: "T-Shirt", price: 800, category: "fashion", image: "https://images.unsplash.com/photo-1521498542256-5aeb47ba2b36?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHRzaGlydHxlbnwwfHwwfHx8MA%3D%3D/?tshirt", desc: "Comfortable cotton t-shirt for daily wear." },
+            { id: 4, name: "Running Shoes", price: 3000, category: "shoes", image: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fG5pa2UlMjBzaG9lc3xlbnwwfHwwfHx8MA%3D%3D/?shoes", desc: "Lightweight running shoes for all terrains." },
+            { id: 5, name: "Smart Watch", price: 2500, category: "electronics", image: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8c21hcnQlMjB3YXRjaHxlbnwwfHwwfHx8MA%3D%3D/?watch", desc: "Feature packed smartwatch with health tracking." }
+        ];
+
+        const params = new URLSearchParams(window.location.search);
+        const productId = parseInt(params.get("id"));
+
+        const product = products.find(p => p.id === productId);
+
+        const details = document.getElementById("productDetails");
+
+        if (!product) {
+            details.innerHTML = "<h4>Product not found.</h4>";
+        } else {
+
+            details.innerHTML = `
+<div class="col-md-6 mb-4">
+<img src="${product.image}" class="img-fluid product-img w-100">
+</div>
+
+<div class="col-md-6">
+<h2 class="fw-bold">${product.name}</h2>
+<p class="text-primary fs-4 fw-bold">₹${product.price}</p>
+
+<p class="text-muted">${product.desc}</p>
+
+<div class="mb-3">
+<i class="bi bi-star-fill text-warning"></i>
+<i class="bi bi-star-fill text-warning"></i>
+<i class="bi bi-star-fill text-warning"></i>
+<i class="bi bi-star-fill text-warning"></i>
+<i class="bi bi-star-half text-warning"></i>
+<span class="ms-2">(4.5 Rating)</span>
+</div>
+
+<div class="d-flex align-items-center mb-3">
+<label class="me-3">Quantity:</label>
+<input type="number" id="qty" value="1" min="1" class="form-control" style="width:100px;">
+</div>
+
+<button class="btn btn-success me-2" onclick="addToCart(${product.id})">
+<i class="bi bi-cart-plus"></i> Add to Cart
+</button>
+
+<a href="products.html" class="btn btn-outline-secondary">
+Continue Shopping
+</a>
+
+</div>
+`;
+        }
+
+        function addToCart(id) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let qty = parseInt(document.getElementById("qty").value);
+            let product = products.find(p => p.id === id);
+
+            let existing = cart.find(item => item.id === id);
+
+            if (existing) {
+                existing.quantity += qty;
+            } else {
+                cart.push({ ...product, quantity: qty });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            alert("Added to Cart!");
+        }
+
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById("cartCount").innerText = totalQty;
+        }
+
+        if (product) {
+            const related = products.filter(p => p.category === product.category && p.id !== product.id);
+
+            const relatedDiv = document.getElementById("relatedProducts");
+
+            related.forEach(p => {
+                relatedDiv.innerHTML += `
+<div class="col-md-3 col-sm-6">
+<div class="card product-card h-100">
+<img src="${p.image}" class="card-img-top" style="height:200px;object-fit:cover;">
+<div class="card-body text-center">
+<h6>${p.name}</h6>
+<p class="text-primary fw-bold">₹${p.price}</p>
+<a href="product-view.html?id=${p.id}" class="btn btn-primary btn-sm">View</a>
+</div>
+</div>
+</div>
+`;
+            });
+        }
+
+        updateCartCount();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

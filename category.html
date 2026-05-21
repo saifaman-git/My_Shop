@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories - MyShop</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .category-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: 0.4s;
+            cursor: pointer;
+        }
+
+        .category-card img {
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-card .card-body {
+            background: linear-gradient(to right, #ffffff, #f8f9fa);
+        }
+
+        .view-btn {
+            transition: 0.3s;
+        }
+
+        .view-btn:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            margin-top: 60px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Premium Full Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+
+        <!-- Logo -->
+        <a class="navbar-brand fw-bold" href="index.html">MyShop</a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+
+            <!-- Menu Links -->
+            <ul class="navbar-nav ms-4">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="products.html">Products</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="category.html">Categories</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+
+            </ul>
+
+            <!-- Right Side -->
+            <div class="ms-auto d-flex align-items-center">
+
+                <!-- Search -->
+                <form class="d-flex me-3">
+                    <input class="form-control form-control-sm me-2"
+                        type="search"
+                        placeholder="Search products...">
+
+                    <button class="btn btn-outline-light btn-sm">
+                        Search
+                    </button>
+                </form>
+
+                <!-- Cart -->
+                <a class="nav-link position-relative text-white" href="cart.html">
+                    <i class="bi bi-cart fs-5"></i>
+
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle"
+                        id="cartCount">0</span>
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+    <!-- Page Title -->
+    <div class="container py-5">
+        <h2 class="text-center fw-bold mb-5">Shop by Categories</h2>
+
+        <div class="row g-4" id="categoryContainer">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        © 2026 MyShop | All Rights Reserved
+    </footer>
+
+    <script>
+        const categories = [
+            {
+                name: "Electronics",
+                slug: "electronics",
+                desc: "Laptops, Mobiles, Headphones & more",
+                image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D/?electronics"
+            },
+            {
+                name: "Fashion",
+                slug: "fashion",
+                desc: "Trendy clothes & accessories",
+                image: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2xvdGhpbmd8ZW58MHx8MHx8fDA%3D/?fashion"
+            },
+            {
+                name: "Shoes",
+                slug: "shoes",
+                desc: "Running, casual & sports shoes",
+                image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c2hvZXN8ZW58MHx8MHx8fDA%3D/?shoes"
+            },
+            {
+                name: "Watches",
+                slug: "watches",
+                desc: "Smart & classic watches",
+                image: "https://images.unsplash.com/photo-1603035945433-1297ccd444b5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fHw%3D/?watch"
+            },
+            {
+                name: "Bags",
+                slug: "bags",
+                desc: "Travel & fashion bags",
+                image: "https://images.unsplash.com/photo-1622560481979-f5b0174242a0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fHw%3D/?bags"
+            },
+            {
+                name: "Sports",
+                slug: "sports",
+                desc: "All sports accessories",
+                image: "https://images.unsplash.com/photo-1715609104145-fd5c13375b03?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjR8fHNwb3J0cyUyMHNob3Bpbmd8ZW58MHx8MHx8fDA%3D/?sports"
+            }
+        ];
+
+        const container = document.getElementById("categoryContainer");
+
+        categories.forEach(cat => {
+            container.innerHTML += `
+<div class="col-md-4 col-sm-6">
+<div class="card category-card h-100">
+<img src="${cat.image}" class="card-img-top">
+<div class="card-body text-center">
+<h5 class="fw-bold">${cat.name}</h5>
+<p class="text-muted">${cat.desc}</p>
+<a href="products.html?category=${cat.slug}" 
+class="btn btn-primary btn-sm view-btn">
+View Products
+</a>
+</div>
+</div>
+</div>
+`;
+        });
+
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById("cartCount").innerText = totalQty;
+        }
+
+        updateCartCount();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

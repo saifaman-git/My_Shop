@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - MyShop</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .product-card {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: 0.3s;
+            background: #fff;
+        }
+
+        .product-card img {
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .filter-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .badge-cart {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <!-- Premium Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+
+        <!-- Logo -->
+        <a class="navbar-brand fw-bold" href="index.html">MyShop</a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <!-- Menu -->
+            <ul class="navbar-nav ms-4">
+
+                <li class="nav-item">
+                    <a class="nav-link " href="index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="products.html">Product</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="category.html">Category</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact Us</a>
+                </li>
+
+            </ul>
+
+            <!-- Right Side -->
+            <div class="ms-auto d-flex align-items-center">
+
+                <!-- Search -->
+                <form class="d-flex me-3">
+                    <input class="form-control form-control-sm me-2"
+                           type="search"
+                           placeholder="Search products...">
+
+                    <button class="btn btn-outline-light btn-sm">
+                        Search
+                    </button>
+                </form>
+
+                <!-- Cart -->
+                <a class="text-white position-relative" href="cart.html">
+                    <i class="bi bi-cart fs-5"></i>
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle"
+                          id="cartCount">0</span>
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container py-5">
+        <div class="row">
+
+            <!-- Filters -->
+            <div class="col-lg-3 mb-4">
+                <div class="filter-box">
+
+                    <h5 class="mb-3">Filters</h5>
+
+                    <input type="text" class="form-control mb-3" placeholder="Search product..." id="searchInput">
+
+                    <label class="form-label">Category</label>
+                    <select class="form-select mb-3" id="categoryFilter">
+                        <option value="all">All</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="shoes">Shoes</option>
+                    </select>
+
+                    <label class="form-label">Max Price: ₹<span id="priceValue">50000</span></label>
+                    <input type="range" class="form-range mb-3" min="500" max="50000" step="500" value="50000"
+                        id="priceRange">
+
+                    <label class="form-label">Sort By</label>
+                    <select class="form-select" id="sortFilter">
+                        <option value="default">Default</option>
+                        <option value="low">Price: Low to High</option>
+                        <option value="high">Price: High to Low</option>
+                    </select>
+
+                </div>
+            </div>
+
+            <!-- Products -->
+            <div class="col-lg-9">
+                <div class="row g-4" id="productList"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Laptop", price: 45000, category: "electronics", image: "https://images.unsplash.com/photo-1651241680016-cc9e407e7dc3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D?laptop" },
+            { id: 2, name: "Headphones", price: 2000, category: "electronics", image: "https://plus.unsplash.com/premium_photo-1679513691474-73102089c117?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aGVhZHBob25lJTIwcHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D/?headphones" },
+            { id: 3, name: "T-Shirt", price: 800, category: "fashion", image: "https://images.unsplash.com/photo-1521498542256-5aeb47ba2b36?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHRzaGlydHxlbnwwfHwwfHx8MA%3D%3D/?tshirtt" },
+            { id: 4, name: "Running Shoes", price: 3000, category: "shoes", image: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fG5pa2UlMjBzaG9lc3xlbnwwfHwwfHx8MA%3D%3D/?shoes" },
+            { id: 5, name: "Smart Watch", price: 2500, category: "electronics", image: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8c21hcnQlMjB3YXRjaHxlbnwwfHwwfHx8MA%3D%3D/?watch" },
+            { id: 6, name: "Bluetooth Speaker", price: 1800, category: "electronics", image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Qmx1ZXRvb3RoJTIwU3BlYWtlcnxlbnwwfHwwfHx8MA%3D%3D/?speaker" },
+            { id: 7, name: "Sneakers", price: 3200, category: "shoes", image: "https://images.unsplash.com/photo-1741627872533-52df24885303?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fHw%3D/?sneakers" },
+            { id: 8, name: "Jacket", price: 2500, category: "fashion", image: "https://images.unsplash.com/photo-1643308002103-f5323c0afa01?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8amFja2V0JTIwbWVufGVufDB8fDB8fHww/?jacket" }
+        ];
+
+        const productList = document.getElementById("productList");
+        const categoryFilter = document.getElementById("categoryFilter");
+        const priceRange = document.getElementById("priceRange");
+        const priceValue = document.getElementById("priceValue");
+        const searchInput = document.getElementById("searchInput");
+        const sortFilter = document.getElementById("sortFilter");
+
+        function displayProducts() {
+
+            let filtered = products.filter(p =>
+                (categoryFilter.value === "all" || p.category === categoryFilter.value)
+                && p.price <= priceRange.value
+                && p.name.toLowerCase().includes(searchInput.value.toLowerCase())
+            );
+
+            if (sortFilter.value === "low") {
+                filtered.sort((a, b) => a.price - b.price);
+            }
+            if (sortFilter.value === "high") {
+                filtered.sort((a, b) => b.price - a.price);
+            }
+
+            productList.innerHTML = "";
+
+            filtered.forEach(product => {
+                productList.innerHTML += `
+<div class="col-md-4 col-sm-6">
+<div class="card product-card h-100">
+<img src="${product.image}" class="card-img-top">
+<div class="card-body text-center d-flex flex-column">
+<h6>${product.name}</h6>
+<p class="text-primary fw-bold">₹${product.price}</p>
+<div class="mt-auto">
+<button class="btn btn-success btn-sm me-2" onclick="addToCart(${product.id})">
+<i class="bi bi-cart-plus"></i> Add
+</button>
+<a href="product-view.html?id=${product.id}" class="btn btn-primary btn-sm">View</a>
+</div>
+</div>
+</div>
+</div>
+`;
+            });
+        }
+
+        function addToCart(id) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let product = products.find(p => p.id === id);
+
+            let existing = cart.find(item => item.id === id);
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            alert("Added to Cart!");
+        }
+
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById("cartCount").innerText = totalQty;
+        }
+
+        categoryFilter.addEventListener("change", displayProducts);
+        priceRange.addEventListener("input", () => {
+            priceValue.innerText = priceRange.value;
+            displayProducts();
+        });
+        searchInput.addEventListener("input", displayProducts);
+        sortFilter.addEventListener("change", displayProducts);
+
+        displayProducts();
+        updateCartCount();
+    </script>
+
+</body>
+
+</html>
